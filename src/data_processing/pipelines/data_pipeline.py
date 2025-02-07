@@ -7,7 +7,7 @@ from data_processing.nodes.data_generation import generate_data
 def data_pipeline() -> Pipeline:
     return Pipeline(
         [
-            node(generate_data, inputs=None, outputs="dataset_generado", name="generar_datos"),
-            node(clean_data, inputs="dataset_generado", outputs="dataset_limpiado", name="limpiar_datos"),
+            node(generate_data, inputs=None, outputs="messy_data", name="generar_datos"),
+            node(clean_data, inputs="messy_data", outputs="clean_data", name="limpiar_datos"),
         ]
     )
