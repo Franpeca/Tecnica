@@ -3,9 +3,9 @@ import re
 from datetime import datetime
 
 def clean_data(messy_data):
-    print("\n\n||||||||||||||||||||||||||||||")
-    print("Limpiando datos...")
-    print("||||||||||||||||||||||||||||||")
+    print("\n\n|||||| Nodo de limpieza de datos ||||||")
+
+    print("|> -- Limpiando datos...")
 
     # Creamos una copia de messy_data para no modificar el dataset original
     # Kedro pasa los datos por referencia
@@ -44,8 +44,12 @@ def clean_data(messy_data):
     df['signup_date'] = df['signup_date'].fillna(datetime.now())
 
     # Mostrar el DataFrame limpio para verificar
-    print("\n\nDatos limpios:")
+    print("\n\n|> -- Resultados de los datos limpios:\n")
+
     df.info()
 
-    # Devolver el DataFrame limpio para que lo guarde el catálogo con un nombre diferente
+    print("\n\n|> -- Datos limpiados y guardados en 'messy_data.csv'")
+    print("|||||||||||||||||||||||||||||||||||||||||||\n\n")
+
+    # El data catalog lo guardará con el nombre correcto
     return df

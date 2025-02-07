@@ -5,7 +5,10 @@ from faker import Faker
 
 
 def generate_data():
-    print("\n\n----------------------------------------------------------------------")
+    print("\n\n|||||| Nodo de generación de datos ||||||")
+    print("|> -- Generando datos...")
+    
+    
     fake = Faker()
     data = []
 
@@ -51,10 +54,13 @@ def generate_data():
     # Aquí guardamos el DataFrame en un archivo CSV
     df.to_csv('messy_data.csv', index=False)
 
-    print("\n\n\n")
-    df.info()
-    print("\n\n\n")
+    print("\n\n|> -- Resultados de los datos generados:\n")
 
-    print("Datos generados y guardados en 'messy_data.csv'")
+    df.info()
+
+    print("\n\n|> -- Datos generados y guardados en 'messy_data.csv'")
+    print("|||||||||||||||||||||||||||||||||||||||||||||\n\n")
+
+
 
     return df
