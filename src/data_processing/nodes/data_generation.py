@@ -51,9 +51,6 @@ def generate_data():
     duplicates = df.iloc[duplicate_indices]  # Extraemos los duplicados del DataFrame original
     df = pd.concat([df, duplicates], ignore_index=True)  # Añadimos los duplicados al DataFrame final
 
-    # Aquí guardamos el DataFrame en un archivo CSV
-    df.to_csv('messy_data.csv', index=False)
-
     print("\n\n|> -- Resultados de los datos generados:\n")
 
     df.info()
