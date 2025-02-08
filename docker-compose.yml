@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass123
+      POSTGRES_DB: dataset_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+    command: tail -f /dev/null   # Mantiene el contenedor de PostgreSQL activo
+
+  kedro:
+    image: kedro_img    # Usa la imagen preexistente "kedro_img"
+    container_name: kedro_container
+    networks:
+      - mynetwork
+    volumes:
+      - ./kedro_project:/home/kedro_docker/kedro_project  # Monta el volumen de la carpeta en el contenedor
+    command: tail -f /dev/null   # Mantiene el contenedor de Kedro activo
+
+volumes:
+  postgres_data:
+
+networks:
+  mynetwork:
+    driver: bridge
+

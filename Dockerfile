@@ -1,19 +1,21 @@
+# Establecer la base de la imagen
 ARG BASE_IMAGE=python:3.12.3-slim
-FROM $BASE_IMAGE as runtime-environment
+FROM $BASE_IMAGE AS runtime-environment
 
+# Instalar dependencias necesarias
 RUN apt-get update && apt-get install -y --no-install-recommends \
     openjdk-17-jre-headless && \
     rm -rf /var/lib/apt/lists/*
 
-# update pip and install uv
+# Actualizar pip
 RUN python -m pip install -U "pip>=21.2"
 RUN pip install uv
 
-# install project requirements
+# Copiar requirements.txt
 COPY requirements.txt /tmp/requirements.txt
 RUN uv pip install --system --no-cache-dir -r /tmp/requirements.txt && rm -f /tmp/requirements.txt
 
-# add kedro user
+# Crear un usuario para Kedro
 ARG KEDRO_UID=999
 ARG KEDRO_GID=0
 RUN groupadd -f -g ${KEDRO_GID} kedro_group && \
@@ -22,13 +24,19 @@ RUN groupadd -f -g ${KEDRO_GID} kedro_group && \
 WORKDIR /home/kedro_docker
 USER kedro_docker
 
+# Imagen principal
 FROM runtime-environment
 
-# copy the whole project except what is in .dockerignore
-ARG KEDRO_UID=999
-ARG KEDRO_GID=0
-COPY --chown=${KEDRO_UID}:${KEDRO_GID} . .
+# Crear carpeta del proyecto
+RUN mkdir -p /home/kedro_docker/kedro_project
 
+# Copiar los archivos del proyecto (modifica las rutas si es necesario)
+COPY ./src /home/kedro_docker/kedro_project/src
+COPY ./conf /home/kedro_docker/kedro_project/conf
+COPY ./notebooks /home/kedro_docker/kedro_project/notebooks
+COPY ./pyproject.toml /home/kedro_docker/kedro_project/
+COPY ./requirements.txt /home/kedro_docker/kedro_project/
+
+# Exponer el puerto necesario
 EXPOSE 8888
 
-CMD ["kedro", "run"]
