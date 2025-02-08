@@ -1,5 +1,17 @@
 version: '3.8'
 
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  kedro_data:
+  airflow_dags:
+  airflow_logs:
+  airflow_config:
+  postgres-db-volume:
+
 services:
   postgres:
     image: postgres:13
@@ -15,23 +27,116 @@ services:
     networks:
       - mynetwork
 
+  redis:
+    image: redis:latest
+    container_name: redis
+    expose:
+      - 6379
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 30s
+      retries: 50
+
   kedro:
-    image: kedro_img   # Usar la imagen de Kedro ya construida "kedro_img"
+    image: kedro_img
     container_name: kedro_container
     networks:
       - mynetwork
     volumes:
-      - ./kedro_project:/home/kedro_docker/kedro_project:delegated  # Monta la carpeta local 'kedro_project'
-      - ./docker/entrypoint.sh:/entrypoint.sh  # Monta el script de entrada
-    entrypoint: ["/bin/bash", "/entrypoint.sh"]  # Ejecuta el script de entrada
+      - ./kedro_project:/home/kedro_docker/kedro_project:delegated
+      - ./docker/entrypoint.sh:/entrypoint.sh
+    entrypoint: ["/bin/bash", "/entrypoint.sh"]
     ports:
-      - "8888:8888"  # Si vas a usar kedro viz o algún otro servicio web
-    user: "${UID}:${GID}"  # Establece el usuario y grupo del contenedor al mismo que el del host
+      - "8888:8888"
+    user: "${UID}:${GID}"
 
-volumes:
-  postgres_data:
-  kedro_data:
+  airflow-init:
+    image: apache/airflow:2.5.0
+    container_name: airflow_init
+    environment:
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://user:pass123@postgres_db:5432/dataset_db
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://user:pass123@postgres_db:5432/dataset_db
+      AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+    entrypoint: bash -c "airflow db init && airflow users create --username admin --firstname Admin --lastname User --role Admin --email admin@example.com --password admin"
+    networks:
+      - mynetwork
+    depends_on:
+      - postgres
 
-networks:
-  mynetwork:
-    driver: bridge
+  airflow-webserver:
+    image: apache/airflow:2.5.0
+    container_name: airflow_webserver
+    environment:
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://user:pass123@postgres_db:5432/dataset_db
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://user:pass123@postgres_db:5432/dataset_db
+      AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+    ports:
+      - "8080:8080"
+    volumes:
+      - airflow_dags:/opt/airflow/dags
+      - airflow_logs:/opt/airflow/logs
+      - airflow_config:/opt/airflow/config
+    networks:
+      - mynetwork
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    command: ["airflow", "webserver"]
+
+  airflow-scheduler:
+    image: apache/airflow:2.5.0
+    container_name: airflow_scheduler
+    environment:
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://user:pass123@postgres_db:5432/dataset_db
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+    volumes:
+      - airflow_dags:/opt/airflow/dags
+      - airflow_logs:/opt/airflow/logs
+    networks:
+      - mynetwork
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    command: ["airflow", "scheduler"]
+
+  airflow-worker:
+    image: apache/airflow:2.5.0
+    container_name: airflow_worker
+    environment:
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://user:pass123@postgres_db:5432/dataset_db
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://user:pass123@postgres_db:5432/dataset_db
+      AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+    volumes:
+      - airflow_dags:/opt/airflow/dags
+      - airflow_logs:/opt/airflow/logs
+    networks:
+      - mynetwork
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    command: ["airflow", "celery", "worker"]
+
+  airflow-triggerer:
+    image: apache/airflow:2.5.0
+    container_name: airflow_triggerer
+    environment:
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://user:pass123@postgres_db:5432/dataset_db
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+    volumes:
+      - airflow_dags:/opt/airflow/dags
+      - airflow_logs:/opt/airflow/logs
+    networks:
+      - mynetwork
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    command: ["airflow", "triggerer"]
