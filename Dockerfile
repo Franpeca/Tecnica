@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN python -m pip install -U "pip>=21.2"
 RUN pip install uv
 
-# Copiar requirements.txt
+# Copiar el requirements.txt
 COPY requirements.txt /tmp/requirements.txt
 RUN uv pip install --system --no-cache-dir -r /tmp/requirements.txt && rm -f /tmp/requirements.txt
 
@@ -27,16 +27,8 @@ USER kedro_docker
 # Imagen principal
 FROM runtime-environment
 
-# Crear carpeta del proyecto
-RUN mkdir -p /home/kedro_docker/kedro_project
-
-# Copiar los archivos del proyecto (modifica las rutas si es necesario)
-COPY ./src /home/kedro_docker/kedro_project/src
-COPY ./conf /home/kedro_docker/kedro_project/conf
-COPY ./notebooks /home/kedro_docker/kedro_project/notebooks
-COPY ./pyproject.toml /home/kedro_docker/kedro_project/
-COPY ./requirements.txt /home/kedro_docker/kedro_project/
+# Crear la carpeta del proyecto sin copiar archivos directamente
+RUN mkdir -p /home/kedro_docker/kedro_project/src /home/kedro_docker/kedro_project/conf /home/kedro_docker/kedro_project/notebooks
 
 # Exponer el puerto necesario
 EXPOSE 8888
-

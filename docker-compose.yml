@@ -22,7 +22,7 @@ services:
     networks:
       - mynetwork
     volumes:
-      - ./kedro_project:/home/kedro_docker/kedro_project  # Monta el volumen de la carpeta en el contenedor
+      - ./kedro_project:/home/kedro_docker/kedro_project  # Monta la carpeta local 'kedro_project'
     command: tail -f /dev/null   # Mantiene el contenedor de Kedro activo
 
 volumes:
@@ -31,4 +31,3 @@ volumes:
 networks:
   mynetwork:
     driver: bridge
-
