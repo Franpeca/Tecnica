@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openjdk-17-jre-headless && \
     rm -rf /var/lib/apt/lists/*
 
-# Actualizar pip
+# Actualizar pip y otras dependencias
 RUN python -m pip install -U "pip>=21.2"
 RUN pip install uv
 
@@ -23,12 +23,6 @@ RUN groupadd -f -g ${KEDRO_GID} kedro_group && \
 
 WORKDIR /home/kedro_docker
 USER kedro_docker
-
-# Imagen principal
-FROM runtime-environment
-
-# Crear la carpeta del proyecto sin copiar archivos directamente
-RUN mkdir -p /home/kedro_docker/kedro_project/src /home/kedro_docker/kedro_project/conf /home/kedro_docker/kedro_project/notebooks
 
 # Exponer el puerto necesario
 EXPOSE 8888

@@ -17,16 +17,21 @@ services:
     command: tail -f /dev/null   # Mantiene el contenedor de PostgreSQL activo
 
   kedro:
-    image: kedro_img    # Usa la imagen preexistente "kedro_img"
+    image: kedro_img   # Usar la imagen de Kedro ya construida "kedro_img"
     container_name: kedro_container
     networks:
       - mynetwork
     volumes:
-      - ./kedro_project:/home/kedro_docker/kedro_project  # Monta la carpeta local 'kedro_project'
-    command: tail -f /dev/null   # Mantiene el contenedor de Kedro activo
+      - ./kedro_project:/home/kedro_docker/kedro_project:delegated  # Monta la carpeta local 'kedro_project'
+      - ./docker/entrypoint.sh:/entrypoint.sh  # Monta el script de entrada
+    entrypoint: ["/bin/bash", "/entrypoint.sh"]  # Ejecuta el script de entrada
+    ports:
+      - "8888:8888"  # Si vas a usar kedro viz o algún otro servicio web
+    user: "${UID}:${GID}"  # Establece el usuario y grupo del contenedor al mismo que el del host
 
 volumes:
   postgres_data:
+  kedro_data:
 
 networks:
   mynetwork:
