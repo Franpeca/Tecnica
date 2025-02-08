@@ -14,7 +14,6 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - mynetwork
-    command: tail -f /dev/null   # Mantiene el contenedor de PostgreSQL activo
 
   kedro:
     image: kedro_img   # Usar la imagen de Kedro ya construida "kedro_img"
