@@ -51,7 +51,7 @@ services:
     entrypoint: ["/bin/bash", "/entrypoint.sh"]
     ports:
       - "8888:8888"
-    user: "${UID}:${GID}"
+    user: "airflow"
 
   airflow-init:
     image: apache/airflow:2.5.0
@@ -77,7 +77,6 @@ services:
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://user:pass123@postgres_db:5432/dataset_db
       AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
-      # AIRFLOW_CONN_POSTGRES_DEFAULT: postgres://user:pass123@postgres_db:5432/dataset_db
       AIRFLOW_CONN_POSTGRES_DEFAULT: postgresql+psycopg2://user:pass123@postgres_db:5432/dataset_db
     ports:
       - "8080:8080"
