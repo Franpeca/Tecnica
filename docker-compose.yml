@@ -80,7 +80,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - airflow_dags:/opt/airflow/dags
+      - ./dags:/opt/airflow/dags
       - airflow_logs:/opt/airflow/logs
       - airflow_config:/opt/airflow/config
     networks:
@@ -98,7 +98,7 @@ services:
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
     volumes:
-      - airflow_dags:/opt/airflow/dags
+      - ./dags:/opt/airflow/dags
       - airflow_logs:/opt/airflow/logs
     networks:
       - mynetwork
@@ -116,7 +116,7 @@ services:
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://user:pass123@postgres_db:5432/dataset_db
       AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
     volumes:
-      - airflow_dags:/opt/airflow/dags
+      - ./dags:/opt/airflow/dags
       - airflow_logs:/opt/airflow/logs
     networks:
       - mynetwork
@@ -132,7 +132,7 @@ services:
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://user:pass123@postgres_db:5432/dataset_db
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
     volumes:
-      - airflow_dags:/opt/airflow/dags
+      - ./dags:/opt/airflow/dags
       - airflow_logs:/opt/airflow/logs
     networks:
       - mynetwork

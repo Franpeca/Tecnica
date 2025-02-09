@@ -168,3 +168,17 @@ This warnings indicates broken support for the dtype!
 2025-02-08 22:41:14,491 - kedro.runner.sequential_runner - INFO - Completed node: limpiar_datos
 2025-02-08 22:41:14,493 - kedro.runner.sequential_runner - INFO - Completed 2 out of 2 tasks
 2025-02-08 22:41:14,496 - kedro.runner.sequential_runner - INFO - Pipeline execution completed successfully.
+2025-02-09 00:49:53,985 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-09 00:49:56,770 - kedro.framework.session.session - INFO - Kedro project kedro_project
+2025-02-09 00:50:07,648 - kedro_telemetry.plugin - INFO - Kedro is sending anonymous usage data with the sole purpose of improving the product. No personal data or IP addresses are stored on our side. If you want to opt out, set the `KEDRO_DISABLE_TELEMETRY` or `DO_NOT_TRACK` environment variables, or create a `.telemetry` file in the current working directory with the contents `consent: false`. Read more at https://docs.kedro.org/en/stable/configuration/telemetry.html
+2025-02-09 00:50:08,097 - kedro.runner.sequential_runner - INFO - Using synchronous mode for loading and saving data. Use the --async flag for potential performance gains. https://docs.kedro.org/en/stable/nodes_and_pipelines/run_a_pipeline.html#load-and-save-asynchronously
+2025-02-09 00:50:08,103 - kedro.pipeline.node - INFO - Running node: generar_datos: generate_data(None) -> [messy_data]
+2025-02-09 00:50:12,831 - kedro.io.data_catalog - INFO - Saving data to [dark_orange]messy_data[/dark_orange] (CSVDataset)...
+2025-02-09 00:50:12,912 - kedro.runner.sequential_runner - INFO - Completed node: generar_datos
+2025-02-09 00:50:12,915 - kedro.runner.sequential_runner - INFO - Completed 1 out of 2 tasks
+2025-02-09 00:50:12,918 - kedro.io.data_catalog - INFO - Loading data from [dark_orange]messy_data[/dark_orange] (CSVDataset)...
+2025-02-09 00:50:12,965 - kedro.pipeline.node - INFO - Running node: limpiar_datos: clean_data([messy_data]) -> [clean_data]
+2025-02-09 00:50:13,051 - kedro.io.data_catalog - INFO - Saving data to [dark_orange]clean_data[/dark_orange] (CSVDataset)...
+2025-02-09 00:50:13,116 - kedro.runner.sequential_runner - INFO - Completed node: limpiar_datos
+2025-02-09 00:50:13,119 - kedro.runner.sequential_runner - INFO - Completed 2 out of 2 tasks
+2025-02-09 00:50:13,122 - kedro.runner.sequential_runner - INFO - Pipeline execution completed successfully.
