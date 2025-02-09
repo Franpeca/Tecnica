@@ -1,26 +1,41 @@
 from airflow import DAG
-from airflow.providers.docker.operators.docker import DockerOperator
-from datetime import datetime, timedelta
+from airflow.operators.bash import BashOperator
+from airflow.operators.python import PythonOperator
+from datetime import datetime
+import docker
 
-# Definir el DAG
-dag = DAG(
-    'kedro_data_pipeline',
-    default_args={
-        'owner': 'airflow',
-        'retries': 1,
-        'retry_delay': timedelta(minutes=5),
-    },
-    schedule_interval=None,
-    start_date=datetime(2025, 2, 8),
-)
+default_args = {
+    'owner': 'airflow',
+    'depends_on_past': False,
+    'start_date': datetime(2024, 2, 9),
+    'retries': 1,
+}
 
-# Definir el DockerOperator para ejecutar Kedro dentro del contenedor
-run_kedro = DockerOperator(
-    task_id='run_kedro',
-    image='kedro_img',  # La imagen de Kedro ya debe estar levantada
-    container_name='kedro_container',  # Asegúrate de que este nombre coincida con el del contenedor levantado
-    command='cd /home/kedro_docker/kedro_project && kedro run',  # Ejecutar el comando kedro run
-    docker_url='unix://var/run/docker.sock',  # Esto es estándar, si tienes Docker corriendo localmente
-    network_mode='bridge',  # O usa el modo de red adecuado para tu contenedor
-    dag=dag,
-)
+# Función para verificar si el contenedor está corriendo
+def check_kedro_container():
+    client = docker.from_env()
+    container_name = "kedro_container"
+    containers = client.containers.list(filters={"name": container_name})
+    
+    if not containers:
+        raise Exception(f"El contenedor {container_name} no está corriendo. Lánzalo con Docker Compose.")
+
+with DAG(
+    'kedro_run_dag',
+    default_args=default_args,
+    schedule_interval=None,  # Solo ejecución manual
+    catchup=False
+) as dag:
+
+    check_container = PythonOperator(
+        task_id="check_kedro_container",
+        python_callable=check_kedro_container
+    )
+
+    # Usar BashOperator para ejecutar el comando dentro del contenedor
+    run_kedro = BashOperator(
+        task_id='run_kedro_pipeline',
+        bash_command='docker exec kedro_container bash -c "cd kedro_project && kedro run"'
+    )
+
+    check_container >> run_kedro  # Asegura que primero se verifique el contenedor antes de ejecutar Kedro
