@@ -156,7 +156,7 @@ services:
 
 
   kedro:
-    image: kedro_img
+    image: franpeca/kedro_img:latest
     container_name: kedro_container
     networks:
       - mynetwork
