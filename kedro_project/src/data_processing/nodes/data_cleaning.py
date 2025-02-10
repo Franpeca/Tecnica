@@ -48,7 +48,7 @@ def clean_data(messy_data):
 
     df.info()
 
-    print("\n\n|> -- Datos limpiados y guardados en 'messy_data.csv'")
+    print("\n\n|> -- Datos limpiados y guardados en 'clean_data.csv'")
     print("|||||||||||||||||||||||||||||||||||||||||||\n\n")
 
     # El data catalog lo guardará con el nombre correcto

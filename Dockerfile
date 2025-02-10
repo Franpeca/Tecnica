@@ -16,8 +16,8 @@ COPY requirements.txt /tmp/requirements.txt
 RUN uv pip install --system --no-cache-dir -r /tmp/requirements.txt && rm -f /tmp/requirements.txt
 
 # Crear un usuario para Kedro
-ARG KEDRO_UID=999
-ARG KEDRO_GID=0
+ARG KEDRO_UID=1000
+ARG KEDRO_GID=1000
 RUN groupadd -f -g ${KEDRO_GID} kedro_group && \
     useradd -m -d /home/kedro_docker -s /bin/bash -g ${KEDRO_GID} -u ${KEDRO_UID} kedro_docker
 

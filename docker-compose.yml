@@ -26,6 +26,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - mynetwork
+    user: "postgres"  # Forzar que se ejecute con el usuario postgres
 
   redis:
     image: redis:latest
@@ -40,36 +41,30 @@ services:
       timeout: 30s
       retries: 50
 
-  kedro:
-    image: kedro_img
-    container_name: kedro_container
-    networks:
-      - mynetwork
-    volumes:
-      - ./kedro_project:/home/kedro_docker/kedro_project:delegated
-      - ./docker/entrypoint.sh:/entrypoint.sh
-    entrypoint: ["/bin/bash", "/entrypoint.sh"]
-    ports:
-      - "8888:8888"
-    user: "airflow"
-
   airflow-init:
-    image: apache/airflow:2.5.0
+    image: apache/airflow:2.10.4
     container_name: airflow_init
     environment:
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://user:pass123@postgres_db:5432/dataset_db
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://user:pass123@postgres_db:5432/dataset_db
       AIRFLOW__CORE__EXECUTOR: CeleryExecutor
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
       AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://user:pass123@postgres_db:5432/dataset_db
       AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
-    entrypoint: bash -c "airflow db init && airflow users create --username admin --firstname Admin --lastname User --role Admin --email admin@example.com --password admin"
+    entrypoint: bash -c "
+      airflow db init &&
+      airflow users create --username admin --firstname Admin --lastname User --role Admin --email admin@example.com --password admin || true &&
+      airflow connections delete postgres_default || true &&
+      airflow connections add 'postgres_default' --conn-uri 'postgresql://user:pass123@postgres_db:5432/dataset_db' &&
+      airflow connections delete airflow_conn || true &&
+      airflow connections add 'airflow_conn' --conn-uri 'http://admin:admin@airflow_webserver:8080'"
     networks:
       - mynetwork
     depends_on:
       - postgres
 
+
   airflow-webserver:
-    image: apache/airflow:2.5.0
+    image: apache/airflow:2.10.4
     container_name: airflow_webserver
     environment:
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://user:pass123@postgres_db:5432/dataset_db
@@ -94,7 +89,7 @@ services:
     command: ["airflow", "webserver"]
 
   airflow-scheduler:
-    image: apache/airflow:2.5.0
+    image: apache/airflow:2.10.4
     container_name: airflow_scheduler
     environment:
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://user:pass123@postgres_db:5432/dataset_db
@@ -113,7 +108,7 @@ services:
     command: ["airflow", "scheduler"]
 
   airflow-worker:
-    image: apache/airflow:2.5.0
+    image: apache/airflow:2.10.4
     container_name: airflow_worker
     environment:
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://user:pass123@postgres_db:5432/dataset_db
@@ -133,7 +128,7 @@ services:
     command: ["airflow", "celery", "worker"]
 
   airflow-triggerer:
-    image: apache/airflow:2.5.0
+    image: apache/airflow:2.10.4
     container_name: airflow_triggerer
     environment:
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://user:pass123@postgres_db:5432/dataset_db
@@ -149,3 +144,18 @@ services:
         condition: service_completed_successfully
     user: "root"  # Cambié a root
     command: ["airflow", "triggerer"]
+
+
+  kedro:
+    image: kedro_img
+    container_name: kedro_container
+    networks:
+      - mynetwork
+    volumes:
+      - ./kedro_project:/home/kedro_docker/kedro_project:delegated
+      - ./docker/entrypoint.sh:/entrypoint.sh
+    entrypoint: ["/bin/bash", "/entrypoint.sh"]
+    ports:
+      - "8888:8888"
+    user: "kedro_docker"  # Aquí usamos el usuario kedro_docker
+  
