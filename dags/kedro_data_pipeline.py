@@ -11,15 +11,6 @@ default_args = {
     'retries': 1,
 }
 
-# Función para verificar si el contenedor está corriendo
-def check_kedro_container():
-    client = docker.from_env()
-    container_name = "kedro_container"
-    containers = client.containers.list(filters={"name": container_name})
-    
-    if not containers:
-        raise Exception(f"El contenedor {container_name} no está corriendo. Lánzalo con Docker Compose.")
-
 # Función para ejecutar el pipeline de Kedro dentro del contenedor
 def run_kedro_pipeline():
     try:
@@ -45,20 +36,15 @@ def run_kedro_pipeline():
         raise
 
 with DAG(
-    'kedro_run_dag',
+    '02_kedro_run',
     default_args=default_args,
     schedule_interval=None,  # Solo ejecución manual
     catchup=False
 ) as dag:
-
-    check_container = PythonOperator(
-        task_id="check_kedro_container",
-        python_callable=check_kedro_container
-    )
 
     run_kedro = PythonOperator(
         task_id='run_kedro_pipeline',
         python_callable=run_kedro_pipeline
     )
 
-    check_container >> run_kedro  # Asegura que primero se verifique el contenedor antes de ejecutar Kedro
+    run_kedro  # Asegura que primero se verifique el contenedor antes de ejecutar Kedro
