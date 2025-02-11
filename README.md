@@ -116,10 +116,12 @@ La clonación del repositorio se puede realizar a través del programa *Git* tan
 El acceso a Airflow y los credenciales son los mismos que los expuestos en el apartado de *Linux*
 
 
-## 🗃️  Estructura del directorio
+
+## 🗃️ Estructura del directorio
 
 A continuación se muestran los directorios más relevantes:
 
+```
 /Tecnica
   ├── dags/                    # DAGs de Airflow
   │   ├── check_containers_and_db.py  # Verifica estado de contenedores y BD
@@ -129,14 +131,16 @@ A continuación se muestran los directorios más relevantes:
   ├── kedro_project/           # Contiene los archivos generados y configurados por Kedro
   │   ├── src/                 # Código del proyecto Kedro. En nodos están los scripts.
   │   ├── data/                # Datos divididos por fases. En la primera estarán los usados.
-  |   └── [...]
+  │   └── [...]
   ├── docker/                  # Directorio de Docker. Usado para ficheros de configuración.
   │   ├── conn_data_db_info.txt # Credenciales de la base de datos (PostgreSQL)
-  |   └── [...]
+  │   └── [...]
   ├── docker-compose.yml       # Configuración de Docker Compose
   ├── Dockerfile               # Usado para la creación de la imagen de Kedro. No hay que usarlo.
   ├── requirements.txt         # Dependencias del proyecto. Usado para la imagen. No hay que instalarlas.
   └── README.md                # Documentación del proyecto
+```
+
 
 ## 📌  Notas sobre el desarrollo
 
