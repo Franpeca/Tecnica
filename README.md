@@ -116,6 +116,28 @@ La clonación del repositorio se puede realizar a través del programa *Git* tan
 El acceso a Airflow y los credenciales son los mismos que los expuestos en el apartado de *Linux*
 
 
+## 🗃️  Estructura del directorio
+
+A continuación se muestran los directorios más relevantes:
+
+/Tecnica
+  ├── dags/                    # DAGs de Airflow
+  │   ├── check_containers_and_db.py  # Verifica estado de contenedores y BD
+  │   ├── kedro_data_pipeline.py      # Ejecuta el pipeline de Kedro
+  │   ├── data_to_postgres.py         # Carga datos en PostgreSQL
+  │   └── truncate_clean_data_table.py # Trunca y limpia tablas en la BD
+  ├── kedro_project/           # Contiene los archivos generados y configurados por Kedro
+  │   ├── src/                 # Código del proyecto Kedro. En nodos están los scripts.
+  │   ├── data/                # Datos divididos por fases. En la primera estarán los usados.
+  |   └── [...]
+  ├── docker/                  # Directorio de Docker. Usado para ficheros de configuración.
+  │   ├── conn_data_db_info.txt # Credenciales de la base de datos (PostgreSQL)
+  |   └── [...]
+  ├── docker-compose.yml       # Configuración de Docker Compose
+  ├── Dockerfile               # Usado para la creación de la imagen de Kedro. No hay que usarlo.
+  ├── requirements.txt         # Dependencias del proyecto. Usado para la imagen. No hay que instalarlas.
+  └── README.md                # Documentación del proyecto
+
 ## 📌  Notas sobre el desarrollo
 
 Se han usado asistentes virtuales como *ChatGPT*, *DeepSeek* y *Github Copilot* tal y como se aconsejó en las reuniones. Esto ha ayudando muchísimo en el entendimiento y desarrollo del proyecto. También tenía presente lograr resultados correctos usando estas tecnologías. 
@@ -151,6 +173,14 @@ A la hora de insertar los datos, se realizan comprobaciones en los *DAGs*, para 
 
 El tema de la conexión con la base de datos fue el mayor problema, posiblemente el que retrasó más el proyecto. Esto es debido a que no podía conectarme a la base de datos, intentaba dejar por defecto unas credenciales de conexión, pero no se quedaban guardadas. Entonces, a raíz de esto, vi que era a causa de problemas con los permisos, por lo que tuve que cambiar muchas partes y volver a probar todo. También han habido problemas relacionados con la configuración de visores de la base de datos. No se ha podido indicar concretamente una conexión para dejarla por defecto y que no haya que ponerla a mano. Aun así, en */docker/* se muestra un TXT con las credenciales, por si se quiere introducir a mano. 
 
+
+#### *PgAdmin*
+Se ha creado un contenedor con la aplicación web *PgAdmin* para poder visualizar los datos y tener un mejor control de la base de datos. No se ha podido sacarle mucha más utilidad que visualizar los datos, ya que no se ha podido implementar algunas ideas que se tenían para la base de datos, como triggers.
+
+Se puede acceder a el a través del navegador con:
+```
+http://localhost:5050/
+```
 
 #### *Airflow*
 Se han creado 4 ***DAGs***:
