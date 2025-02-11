@@ -134,7 +134,7 @@ Con *Kedro* se podrían integrar fácilmente otras tareas de tratamiento de dato
 
 En relación a los *scripts* de datos, no hubo mucha complicación en su realización. Gran parte se realizó de forma directa gracias a los asistentes virtuales y al conocimiento típico del tratamiento de *datasets*.
 
-El problema principal con *Kedro* fue cómo manejar los *volúmenes* para que se sincronizaran correctamente los cambios, además de problemas de permisos relacionados con la generación de su imagen. Pero esto se logró solventar modificando el *Dockerfile* y el *docker-compose.yml*.
+El problema principal con *Kedro* fue cómo manejar los *volúmenes* para que se sincronizaran correctamente los cambios, además de problemas de permisos relacionados con la generación de su imagen. Pero esto se logró solventar modificando el *Dockerfile* y el *docker-compose.yml*. También en la construccion de su imagen, ya que fue aquí donde entendi finalmente por completo cómo funcionaban los volúmenes de Docker.
 
 
 #### *PostgreSQL*
@@ -160,6 +160,7 @@ En relación a los problemas, el mayor nuevamente ha sido los permisos. **Soy co
 
 #### *Docker*
 Hay varios contenedores de *Docker*, indicados en el fichero *docker-compose.yml*. Se ha decidido incorporar también *Kedro* en un entorno propio ya que este tipo de *framework* se utiliza en áreas con muchas librerías pesadas, como *Scikit-Learn* o *PyTorch*, entre otras. El levantamiento de todos los contenedores se logra únicamente con *docker-compose.yml*, ahí se puede ver reflejado cómo se han montado los volúmenes, buscando todo el rato una correcta forma de tratarlos. **Tenía claras dos cosas desde el inicio del desarrollo**, una era que el contenido de *Kedro* se sincronizara entre el contenedor y el repositorio local y la otra que el contenido de la base de datos no se perdiera tras cerrar los contenedores. Hasta donde me ha permitido el tiempo, esto se cumple.
+Se ha creado una imagen de Kedro propia ya que este no dispone de una imagen en Docker Hub, por lo que se ha creado un *Dockerfile* para ello. **No es necesario construir la imagen**, mi imagen está subida a *Docker Hub* y se descarga de forma automática la primera vez que se lanzan los contenedores en una máquina nueva.
 
 Nuevamente, el tema de los permisos ha sido un problema, y es a raíz de este fichero. También, sé que hay partes que quizá podrían estar un poco mejor hechas en esta parte, pero que tuve que dejar así dado que me estaba retrasando demasiado y no había avanzado en otras.
 
