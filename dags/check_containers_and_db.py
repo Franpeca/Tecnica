@@ -25,7 +25,7 @@ def check_kedro_container():
 # Función para verificar si el contenedor de PostgreSQL está corriendo
 def check_postgres_container():
     client = docker.from_env()
-    container_name = "postgres_db"  # Cambia esto por el nombre de tu contenedor PostgreSQL
+    container_name = "postgres_db"
     containers = client.containers.list(filters={"name": container_name})
     
     if not containers:
@@ -33,7 +33,7 @@ def check_postgres_container():
 
 # Función para verificar si la base de datos 'data_db' existe en PostgreSQL
 def check_data_db_exists():
-    hook = PostgresHook(postgres_conn_id='postgres_data_conn')  # Asegúrate de que el ID de la conexión sea correcto
+    hook = PostgresHook(postgres_conn_id='postgres_data_conn')
     conn = hook.get_conn()
     cursor = conn.cursor()
 

@@ -1,0 +1,11 @@
+# Estos son los parámetros con los que se puede conectar la base de datos
+# con cualquier herramienta relacionada.
+
+# No automatirzar esta parte, no se cambian los ficheros de configuracion al
+# inicializar los contenedores. Hay que hacerlo manualmente o con scripts (mala práctica).
+
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=data_db

@@ -140,7 +140,7 @@ with DAG(
         task_id="check_dataset_exists",
         python_callable=check_dataset_exists,
         retries=0,  # Evita reintentos
-        on_failure_callback=handle_check_dataset_failure  # Solo esta tarea tendra un manejo personalizado de fallos
+        on_failure_callback=handle_check_dataset_failure  # Agregado para manejar fallos de forma concreta
     )
 
     # Tarea 2: Verificar si la tabla 'clean_data' existe y crearla si no existe
@@ -156,7 +156,7 @@ with DAG(
         task_id="insert_data_to_db",
         python_callable=insert_data_to_db,
         retries=0,
-        on_failure_callback=handle_insert_data_error  # Agregado para manejar fallos de forma centralizada
+        on_failure_callback=handle_insert_data_error  # Agregado para manejar fallos de forma concreta
     )
 
     # Asignamos las tareas de ejecución en orden

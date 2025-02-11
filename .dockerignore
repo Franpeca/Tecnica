@@ -1,1 +1,3 @@
 tecnica_env/
+.dive-ci
+.dockerignore

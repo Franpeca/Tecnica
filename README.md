@@ -5,8 +5,7 @@
 
 ## 📝 Descripción
 
-Este repositorio corresponde a la prueba técnica para acceder a las prácticas de empresa.  
-Se busca integrar una serie de herramientas del ámbito de la arquitectura e ingeniería de datos. Desde la generación de los mismos como su tratamiento e incorporación en bases de datos, usando para ello software actual y profesional y que pueda ser usado en producción.
+Este repositorio corresponde a la prueba técnica para acceder a las prácticas de empresa. 
 
 Las herramientas principales utilizadas han sido:
 
@@ -44,9 +43,9 @@ Y como otros **objetivos opcionales** que se han alcanzado son:
 * Control de errores y documentación de lo que se está realizando en cada proceso.
 * Uso de repositorios y control de versiones. Documentación constante de los cambios.
 * Seguimiento de **buenas prácticas** en diversas partes del proyecto, tanto en la forma de codificar como en la lógica seguida en los scripts de python, docker-compose.yml, entre otros.
+* Comprobación de funcionamiento en otros entornos (*Linux, en concreto en Ubuntu y Debian*)
 
 ## 🛠️ Cómo instalar y lanzar el proyecto
-
 
 > ⚠️ Se podría haber realizado un script para automatizar muchas de estas partes, pero me he ceñido al documento y a lo que entendido en las reuniones. Es por esto que *"lanzar todo con un click"* lo entiendo como que todo se levante con *docker-compose* y que es lo que se pretendía. Ha sido una decisión de diseño, no por falta de tiempo.
 
@@ -119,20 +118,26 @@ El acceso a Airflow y los credenciales son los mismos que los expuestos en el ap
 
 ## 📌  Notas sobre el desarrollo
 
-Decir que se han usado asistentes virtuales como *ChatGPT*, *DeepSeek* y *Github Copilot* tal y como se aconsejó en las reuniones. Esto ha ayudando muchísimo en el entendimiento y desarrollo del proyecto. También tenía presente lograr resultados correctos usando estas tecnologías. 
+Se han usado asistentes virtuales como *ChatGPT*, *DeepSeek* y *Github Copilot* tal y como se aconsejó en las reuniones. Esto ha ayudando muchísimo en el entendimiento y desarrollo del proyecto. También tenía presente lograr resultados correctos usando estas tecnologías. 
 
 Antes de ponerme manos a la obra, pensé en cómo tendría que estructurar todo e investigué bien cómo funcionaban los contenedores a nivel de lógica, si podía comunicarme entre ellos como quisiera o si habian algunas restricciones. Tras esto, pensé en incorporar Kedro de forma aislada primero y cuando tuviera ya los datos montar la base de datos. Después, empecé a usar Docker para montar las cosas que yo mismo creé. Es decir, primero creé una base con la que empezar a trabajar y cuando ya tenía cosas mías, las pasé a Docker, ya que no iba a usar Docker sin tener nada que montar. Una vez me funcionaba todo por separado y en su respectivo contenedor, decidí montar Airflow y trabajé en la comunicación entre contenedores. Una vez funcionaba, pasé a elaborar los DAGs sabiendo que podía acceder sin problema.
 
 Podría hablar mucho más sobre varios detalles, pero intentaré comentar lo más relevante de cada parte:
 
 #### *Kedro*
-*Kedro* se utiliza para proyectos de ciencias de datos, gestionando las *pipelines* de procesos relacionados con esto. En esta parte (en sus carpetas) se encuentra el código que genera y limpia los datos.
+*Kedro* se utiliza para proyectos de ciencias de datos, gestionando las *pipelines* de procesos relacionados con esto. En esta parte (en sus carpetas) se encuentra el código que genera y limpia los datos. El código de generación de datos se encuentra en */kedro_project/src/data_processing/nodes*.
 
-La motivación de usar *Kedro* en esta prueba es reflejar una buena práctica tanto en cómo se desarrollan estos procesos como en la organización del código, además de dar características como modularidad, separación de tareas, reutilización, etc., en el nivel de procesamiento de datos. 
+La motivación de usar *Kedro* en esta prueba es reflejar una buena práctica tanto en cómo se desarrollan esta parte de los proyectos como en la organización del código, además de dar características como modularidad, separación de tareas, reutilización, etc, en el nivel de procesamiento de datos. 
 
-Con *Kedro* se podrían integrar fácilmente otras tareas de tratamiento de datos, por ejemplo, para nuestro caso se podrían realizar diferentes formas de limpiar los datos o diferentes fuentes de generación, simulando un entorno real donde se obtienen *volúmenes* de datos. También permitiría realizar pruebas directamente y de forma modular. **Desde el inicio de la prueba, se ha tenido esta idea en mente, desarrollando todo en base a ello.**
+Con *Kedro* se podrían integrar fácilmente otras tareas de tratamiento de datos, por ejemplo, para nuestro caso se podrían realizar diferentes formas de limpiar los datos o diferentes fuentes de generación, simulando un entorno real donde se obtienen volúmenes de datos. También permitiría realizar pruebas directamente y de forma modular. **Desde el inicio de la prueba, se ha tenido esta idea en mente, desarrollando todo en base a ello.** Kedro incorpora una herramienta llamada *Kedro Viz* para la visualización gráfica de los pipelines.
 
 En relación a los *scripts* de datos, no hubo mucha complicación en su realización. Gran parte se realizó de forma directa gracias a los asistentes virtuales y al conocimiento típico del tratamiento de *datasets*.
+
+Kedro cuenta con una herramienta llamada ***Kedro Viz*** que permite ver graficamente los pipelines y flujos existentes. Se tenía planificado realizar una DAG de Kedro, pero se ha dificultado su integración, aun así, se puede ejecutar con este comando nada mas levantar los contenedores:
+
+```
+docker exec -it kedro_container bash -c "cd kedro_project && kedro viz --port 4141 --host 0.0.0.0"
+```
 
 El problema principal con *Kedro* fue cómo manejar los *volúmenes* para que se sincronizaran correctamente los cambios, además de problemas de permisos relacionados con la generación de su imagen. Pero esto se logró solventar modificando el *Dockerfile* y el *docker-compose.yml*. También en la construccion de su imagen, ya que fue aquí donde entendi finalmente por completo cómo funcionaban los volúmenes de Docker.
 
@@ -144,7 +149,7 @@ Entre las características principales se puede ver que, al levantar el contened
 
 A la hora de insertar los datos, se realizan comprobaciones en los *DAGs*, para que en caso de que un *item* exista en la base de datos, se pueda no introducir este y continuar introduciendo el resto.
 
-El tema de la conexión con la base de datos fue el mayor problema, posiblemente el que retrasó más el proyecto. Esto es debido a que no podía conectarme a la base de datos, intentaba dejar por defecto unas credenciales de conexión, pero no se quedaban guardadas. Entonces, a raíz de esto, vi que era a causa de problemas con los permisos, por lo que tuve que cambiar muchas partes y volver a probar todo.  
+El tema de la conexión con la base de datos fue el mayor problema, posiblemente el que retrasó más el proyecto. Esto es debido a que no podía conectarme a la base de datos, intentaba dejar por defecto unas credenciales de conexión, pero no se quedaban guardadas. Entonces, a raíz de esto, vi que era a causa de problemas con los permisos, por lo que tuve que cambiar muchas partes y volver a probar todo. También han habido problemas relacionados con la configuración de visores de la base de datos. No se ha podido indicar concretamente una conexión para dejarla por defecto y que no haya que ponerla a mano. Aun así, en */docker/* se muestra un TXT con las credenciales, por si se quiere introducir a mano. 
 
 
 #### *Airflow*
@@ -154,19 +159,19 @@ Se han creado 4 ***DAGs***:
 * 03: Inserción de los datos en la base de datos.
 * 04: Borrado completo de los datos en la base de datos *(extra, para pruebas y visualización de funcionamiento de partes)*.
 
-Como se ha dicho ya, se buscaba separar funcionalidades y la parte de los datos los genera *Kedro*. La parte de volcado, al ser más general, se ha decidido que se realice a través de un *DAG*, ya que esta tarea no corresponde a un flujo de datos como se realiza en *Kedro*. Además, así se demuestra un mayor conocimiento de los *DAGs*. También, se han añadido funciones de control de errores para saber qué ha estado fallando, revisando para ello los *logs* en la web (aquí la decisión de documentar bien las salidas en la parte de *Kedro*, entre otros).
+Como se ha dicho ya, se buscaba separar funcionalidades y la parte de los datos los genera *Kedro*. La parte de volcado, al ser más general, se ha decidido que se realice a través de un *DAG*, ya que esta tarea no corresponde a un flujo de datos como se realiza en *Kedro*. Además, así se demuestra un mayor conocimiento de los *DAGs*. También, se han añadido funciones de control de errores para saber qué ha estado fallando, revisando para ello los *logs* en la web (aquí la decisión de documentar bien las salidas en la parte de *Kedro*, entre otros). Los *DAGs* se encuentan en la carpeta */DAGs* y funcionan de forma síncrona con el volumen. Todo cambio en esta carpeta se refleja en el volumen del contenedor.
 
 En relación a los problemas, el mayor nuevamente ha sido los permisos. **Soy consciente de que es una mala práctica** que el usuario *root* sea el usuario por defecto de este contenedor, pero nuevamente, tuve mucho problema con los permisos. Puedo lograr que *Airflow* tenga su usuario por defecto, pero cuando lo logro, obtengo problemas con el grupo *Docker* y se me presentan problemas al acceder al *socket*, impidiéndome la comunicación entre contenedores e incluso la ejecución. Creo que el problema es cómo creo estos usuarios en el *docker-compose* e incluso en cómo se registra la información de *Airflow* en la base de datos.
 
 #### *Docker*
-Hay varios contenedores de *Docker*, indicados en el fichero *docker-compose.yml*. Se ha decidido incorporar también *Kedro* en un entorno propio ya que este tipo de *framework* se utiliza en áreas con muchas librerías pesadas, como *Scikit-Learn* o *PyTorch*, entre otras. El levantamiento de todos los contenedores se logra únicamente con *docker-compose.yml*, ahí se puede ver reflejado cómo se han montado los volúmenes, buscando todo el rato una correcta forma de tratarlos. **Tenía claras dos cosas desde el inicio del desarrollo**, una era que el contenido de *Kedro* se sincronizara entre el contenedor y el repositorio local y la otra que el contenido de la base de datos no se perdiera tras cerrar los contenedores. Hasta donde me ha permitido el tiempo, esto se cumple.
-Se ha creado una imagen de Kedro propia ya que este no dispone de una imagen en Docker Hub, por lo que se ha creado un *Dockerfile* para ello. **No es necesario construir la imagen**, mi imagen está subida a *Docker Hub* y se descarga de forma automática la primera vez que se lanzan los contenedores en una máquina nueva.
+Hay varios contenedores de *Docker*, indicados en el fichero *docker-compose.yml*. Se ha decidido incorporar también *Kedro* en un entorno propio ya que este tipo de *framework* se utiliza en áreas con muchas librerías pesadas, como *Scikit-Learn* o *PyTorch*, entre otras. El levantamiento de todos los contenedores se logra únicamente con *docker-compose.yml*, ahí se puede ver reflejado cómo se han montado los volúmenes, buscando todo el rato una correcta forma de tratarlos. **Tenía claras dos cosas desde el inicio del desarrollo**, una era que el contenido de *Kedro* se sincronizara entre el contenedor y el repositorio local y la otra que el contenido de la base de datos no se perdiera tras cerrar los contenedores. Hasta donde me ha permitido el tiempo probar, esto se cumple.
+Se ha creado una imagen de Kedro propia, ya que este no dispone de una imagen en Docker Hub, por lo que se ha creado un *Dockerfile* para ello. **No es necesario construir la imagen**, la imagen está subida a *Docker Hub* y se descarga de forma automática la primera vez que se lanzan los contenedores en una máquina nueva.
 
-Nuevamente, el tema de los permisos ha sido un problema, y es a raíz de este fichero. También, sé que hay partes que quizá podrían estar un poco mejor hechas en esta parte, pero que tuve que dejar así dado que me estaba retrasando demasiado y no había avanzado en otras.
+Nuevamente, el tema de los permisos ha sido un problema, y es a raíz de este fichero. También, sé que hay partes que quizá podrían estar un poco mejor hechas, pero que tuve que dejar así dado que me estaba retrasando demasiado y no había avanzado en otras.
 
-Otro problema relacionado con *Docker* y por el cual perdí un día entero fue por el tema de la virtualización. *Docker* utiliza en *Windows* una virtualización llamada *Hyper-V* junto con el subsistema de *Linux* para *Windows*, en concreto el 2, y ambas de estas tecnologías **no funcionan en mi ordenador personal ni en un portátil que me prestaron**. Tuve que crear una máquina virtual de *Linux* y ahí pude realizar todo. Para probar el proyecto en *Windows* probé a crear una máquina virtual, pero tras instalar *Docker* en ella no me dejaba iniciar *Windows*. El problema era nuevamente por *Hyper-V*. Es por esto que **no he podido probar al completo el proyecto en un entorno *Windows***.
+Otro problema relacionado con *Docker* y por el cual perdí un día entero fue por el tema de la virtualización. *Docker* utiliza en *Windows* una virtualización llamada *Hyper-V* junto con el subsistema de *Linux* para *Windows*, en concreto el 2, y ambas de estas tecnologías **no funcionan en mi ordenador personal ni en un portátil que me prestaron**. Tuve que crear una máquina virtual de *Linux* y ahí pude realizar todo. Para probar el proyecto en *Windows* probé a crear una máquina virtual, pero tras instalar *Docker* en ella no me dejaba iniciar *Windows*. El problema era nuevamente por *Hyper-V*. Es por esto que **no he podido probar al completo el proyecto en un entorno Windows**.
 
-He intentado tener cuidado con cómo atribuyo permisos y usado scripts de *bash*, para que se ejecuten en los contenedores y que así no haya problema con *Windows*, pero aun así las rutas de los volúmenes están en formato *Linux* y no dinámicas, dado que no he podido probar. Aun así, hasta donde leí en la documentación, *Docker Desktop* se encarga de esto último.
+He intentado tener cuidado con cómo atribuyo permisos y usado scripts de *bash*, para que se ejecuten estos en los contenedores y que así no haya problema con *Windows*, pero aun así las rutas de los volúmenes están en formato *Linux* y no dinámicas, dado que no he podido hacer pruebas. Aun así, y hasta donde leí en la documentación, *Docker Desktop* se encarga de esto último, pero no tengo forma de probarlo.
 
 
 ## 💡  Cosas que quería implementar

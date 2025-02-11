@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Permite crear las tablas en caso de que no existan
+
 # Esperar a que el servidor de PostgreSQL esté disponible
 until psql -U user -d postgres -c '\q'; do
   echo "Esperando a que PostgreSQL esté disponible..."

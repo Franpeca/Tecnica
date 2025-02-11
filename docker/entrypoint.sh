@@ -1,3 +1,3 @@
 #!/bin/bash
 # entrypoint.sh
-tail -f /dev/null
+tail -f /dev/null # Para detenerse

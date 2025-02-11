@@ -562,3 +562,128 @@ This warnings indicates broken support for the dtype!
 2025-02-11 01:42:41,771 - kedro.runner.sequential_runner - INFO - Completed node: limpiar_datos
 2025-02-11 01:42:41,773 - kedro.runner.sequential_runner - INFO - Completed 2 out of 2 tasks
 2025-02-11 01:42:41,776 - kedro.runner.sequential_runner - INFO - Pipeline execution completed successfully.
+2025-02-11 04:03:42,953 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 04:03:50,963 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 04:04:01,919 - kedro_telemetry.plugin - INFO - Kedro is sending anonymous usage data with the sole purpose of improving the product. No personal data or IP addresses are stored on our side. If you want to opt out, set the `KEDRO_DISABLE_TELEMETRY` or `DO_NOT_TRACK` environment variables, or create a `.telemetry` file in the current working directory with the contents `consent: false`. Read more at https://docs.kedro.org/en/stable/configuration/telemetry.html
+2025-02-11 04:30:01,139 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 04:30:08,417 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 04:30:19,609 - kedro_telemetry.plugin - INFO - Kedro is sending anonymous usage data with the sole purpose of improving the product. No personal data or IP addresses are stored on our side. If you want to opt out, set the `KEDRO_DISABLE_TELEMETRY` or `DO_NOT_TRACK` environment variables, or create a `.telemetry` file in the current working directory with the contents `consent: false`. Read more at https://docs.kedro.org/en/stable/configuration/telemetry.html
+2025-02-11 04:31:30,793 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 04:31:37,516 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 04:31:46,412 - kedro_telemetry.plugin - INFO - Kedro is sending anonymous usage data with the sole purpose of improving the product. No personal data or IP addresses are stored on our side. If you want to opt out, set the `KEDRO_DISABLE_TELEMETRY` or `DO_NOT_TRACK` environment variables, or create a `.telemetry` file in the current working directory with the contents `consent: false`. Read more at https://docs.kedro.org/en/stable/configuration/telemetry.html
+2025-02-11 04:33:18,435 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 04:33:25,949 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 04:33:34,927 - kedro_telemetry.plugin - INFO - Kedro is sending anonymous usage data with the sole purpose of improving the product. No personal data or IP addresses are stored on our side. If you want to opt out, set the `KEDRO_DISABLE_TELEMETRY` or `DO_NOT_TRACK` environment variables, or create a `.telemetry` file in the current working directory with the contents `consent: false`. Read more at https://docs.kedro.org/en/stable/configuration/telemetry.html
+2025-02-11 04:33:35,642 - uvicorn.error - ERROR - Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "uvloop/loop.pyx", line 1512, in uvloop.loop.Loop.run_until_complete
+  File "uvloop/loop.pyx", line 1505, in uvloop.loop.Loop.run_until_complete
+  File "uvloop/loop.pyx", line 1379, in uvloop.loop.Loop.run_forever
+  File "uvloop/loop.pyx", line 557, in uvloop.loop.Loop._run
+  File "uvloop/loop.pyx", line 476, in uvloop.loop.Loop._on_idle
+  File "uvloop/cbhandles.pyx", line 83, in uvloop.loop.Handle._run
+  File "uvloop/cbhandles.pyx", line 63, in uvloop.loop.Handle._run
+  File "/usr/local/lib/python3.12/site-packages/uvicorn/server.py", line 69, in serve
+    with self.capture_signals():
+  File "/usr/local/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/usr/local/lib/python3.12/site-packages/uvicorn/server.py", line 330, in capture_signals
+    signal.raise_signal(captured_signal)
+  File "/usr/local/lib/python3.12/asyncio/runners.py", line 157, in _on_sigint
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/starlette/routing.py", line 700, in lifespan
+    await receive()
+  File "/usr/local/lib/python3.12/site-packages/uvicorn/lifespan/on.py", line 137, in receive
+    return await self.receive_queue.get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/asyncio/queues.py", line 158, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+2025-02-11 04:33:39,150 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 04:33:45,616 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 04:33:54,578 - kedro_telemetry.plugin - INFO - Kedro is sending anonymous usage data with the sole purpose of improving the product. No personal data or IP addresses are stored on our side. If you want to opt out, set the `KEDRO_DISABLE_TELEMETRY` or `DO_NOT_TRACK` environment variables, or create a `.telemetry` file in the current working directory with the contents `consent: false`. Read more at https://docs.kedro.org/en/stable/configuration/telemetry.html
+2025-02-11 04:49:30,131 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 04:49:37,186 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 04:49:46,958 - kedro_telemetry.plugin - INFO - Kedro is sending anonymous usage data with the sole purpose of improving the product. No personal data or IP addresses are stored on our side. If you want to opt out, set the `KEDRO_DISABLE_TELEMETRY` or `DO_NOT_TRACK` environment variables, or create a `.telemetry` file in the current working directory with the contents `consent: false`. Read more at https://docs.kedro.org/en/stable/configuration/telemetry.html
+2025-02-11 06:01:47,498 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 06:01:54,625 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 06:02:04,798 - kedro_telemetry.plugin - INFO - Kedro is sending anonymous usage data with the sole purpose of improving the product. No personal data or IP addresses are stored on our side. If you want to opt out, set the `KEDRO_DISABLE_TELEMETRY` or `DO_NOT_TRACK` environment variables, or create a `.telemetry` file in the current working directory with the contents `consent: false`. Read more at https://docs.kedro.org/en/stable/configuration/telemetry.html
+2025-02-11 06:03:37,130 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 06:03:43,771 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 06:03:52,612 - kedro_telemetry.plugin - INFO - Kedro is sending anonymous usage data with the sole purpose of improving the product. No personal data or IP addresses are stored on our side. If you want to opt out, set the `KEDRO_DISABLE_TELEMETRY` or `DO_NOT_TRACK` environment variables, or create a `.telemetry` file in the current working directory with the contents `consent: false`. Read more at https://docs.kedro.org/en/stable/configuration/telemetry.html
+2025-02-11 06:05:18,960 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 06:05:20,971 - kedro.framework.session.session - INFO - Kedro project kedro_project
+2025-02-11 06:05:28,769 - kedro_telemetry.plugin - INFO - Kedro is sending anonymous usage data with the sole purpose of improving the product. No personal data or IP addresses are stored on our side. If you want to opt out, set the `KEDRO_DISABLE_TELEMETRY` or `DO_NOT_TRACK` environment variables, or create a `.telemetry` file in the current working directory with the contents `consent: false`. Read more at https://docs.kedro.org/en/stable/configuration/telemetry.html
+2025-02-11 06:05:29,260 - kedro.runner.sequential_runner - INFO - Using synchronous mode for loading and saving data. Use the --async flag for potential performance gains. https://docs.kedro.org/en/stable/nodes_and_pipelines/run_a_pipeline.html#load-and-save-asynchronously
+2025-02-11 06:05:29,265 - kedro.pipeline.node - INFO - Running node: generar_datos: generate_data(None) -> [messy_data]
+2025-02-11 06:05:33,427 - kedro.io.data_catalog - INFO - Saving data to [dark_orange]messy_data[/dark_orange] (CSVDataset)...
+2025-02-11 06:05:33,514 - kedro.runner.sequential_runner - INFO - Completed node: generar_datos
+2025-02-11 06:05:33,517 - kedro.runner.sequential_runner - INFO - Completed 1 out of 1 tasks
+2025-02-11 06:05:33,522 - kedro.runner.sequential_runner - INFO - Pipeline execution completed successfully.
+2025-02-11 07:24:30,076 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 07:24:32,774 - kedro.framework.session.session - INFO - Kedro project kedro_project
+2025-02-11 07:24:43,202 - kedro_telemetry.plugin - INFO - Kedro is sending anonymous usage data with the sole purpose of improving the product. No personal data or IP addresses are stored on our side. If you want to opt out, set the `KEDRO_DISABLE_TELEMETRY` or `DO_NOT_TRACK` environment variables, or create a `.telemetry` file in the current working directory with the contents `consent: false`. Read more at https://docs.kedro.org/en/stable/configuration/telemetry.html
+2025-02-11 07:24:43,658 - kedro.runner.sequential_runner - INFO - Using synchronous mode for loading and saving data. Use the --async flag for potential performance gains. https://docs.kedro.org/en/stable/nodes_and_pipelines/run_a_pipeline.html#load-and-save-asynchronously
+2025-02-11 07:24:43,663 - kedro.pipeline.node - INFO - Running node: generar_datos: generate_data(None) -> [messy_data]
+2025-02-11 07:24:48,200 - kedro.io.data_catalog - INFO - Saving data to [dark_orange]messy_data[/dark_orange] (CSVDataset)...
+2025-02-11 07:24:48,316 - kedro.runner.sequential_runner - INFO - Completed node: generar_datos
+2025-02-11 07:24:48,319 - kedro.runner.sequential_runner - INFO - Completed 1 out of 2 tasks
+2025-02-11 07:24:48,324 - kedro.io.data_catalog - INFO - Loading data from [dark_orange]messy_data[/dark_orange] (CSVDataset)...
+2025-02-11 07:24:48,369 - kedro.pipeline.node - INFO - Running node: limpiar_datos: clean_data([messy_data]) -> [clean_data]
+2025-02-11 07:24:48,475 - kedro.io.data_catalog - INFO - Saving data to [dark_orange]clean_data[/dark_orange] (CSVDataset)...
+2025-02-11 07:24:48,546 - kedro.runner.sequential_runner - INFO - Completed node: limpiar_datos
+2025-02-11 07:24:48,552 - kedro.runner.sequential_runner - INFO - Completed 2 out of 2 tasks
+2025-02-11 07:24:48,555 - kedro.runner.sequential_runner - INFO - Pipeline execution completed successfully.
+2025-02-11 07:24:54,190 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 07:24:56,394 - kedro.framework.session.session - INFO - Kedro project kedro_project
+2025-02-11 07:25:03,355 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 07:25:04,368 - kedro_telemetry.plugin - INFO - Kedro is sending anonymous usage data with the sole purpose of improving the product. No personal data or IP addresses are stored on our side. If you want to opt out, set the `KEDRO_DISABLE_TELEMETRY` or `DO_NOT_TRACK` environment variables, or create a `.telemetry` file in the current working directory with the contents `consent: false`. Read more at https://docs.kedro.org/en/stable/configuration/telemetry.html
+2025-02-11 07:25:04,740 - kedro.runner.sequential_runner - INFO - Using synchronous mode for loading and saving data. Use the --async flag for potential performance gains. https://docs.kedro.org/en/stable/nodes_and_pipelines/run_a_pipeline.html#load-and-save-asynchronously
+2025-02-11 07:25:04,744 - kedro.pipeline.node - INFO - Running node: generar_datos: generate_data(None) -> [messy_data]
+2025-02-11 07:25:06,126 - kedro.framework.session.session - INFO - Kedro project kedro_project
+2025-02-11 07:25:10,774 - kedro.framework.project - INFO - Using 'conf/logging.yml' as logging configuration. You can change this by setting the KEDRO_LOGGING_CONFIG environment variable accordingly.
+2025-02-11 07:25:11,491 - kedro.io.data_catalog - INFO - Saving data to [dark_orange]messy_data[/dark_orange] (CSVDataset)...
+2025-02-11 07:25:11,576 - kedro.runner.sequential_runner - INFO - Completed node: generar_datos
+2025-02-11 07:25:11,582 - kedro.runner.sequential_runner - INFO - Completed 1 out of 2 tasks
+2025-02-11 07:25:11,588 - kedro.io.data_catalog - INFO - Loading data from [dark_orange]messy_data[/dark_orange] (CSVDataset)...
+2025-02-11 07:25:11,640 - kedro.pipeline.node - INFO - Running node: limpiar_datos: clean_data([messy_data]) -> [clean_data]
+2025-02-11 07:25:11,731 - kedro.io.data_catalog - INFO - Saving data to [dark_orange]clean_data[/dark_orange] (CSVDataset)...
+2025-02-11 07:25:11,795 - kedro.runner.sequential_runner - INFO - Completed node: limpiar_datos
+2025-02-11 07:25:11,803 - kedro.runner.sequential_runner - INFO - Completed 2 out of 2 tasks
+2025-02-11 07:25:11,806 - kedro.runner.sequential_runner - INFO - Pipeline execution completed successfully.
+2025-02-11 07:25:15,326 - kedro.framework.session.session - INFO - Kedro project kedro_project
+2025-02-11 07:25:22,309 - kedro_telemetry.plugin - INFO - Kedro is sending anonymous usage data with the sole purpose of improving the product. No personal data or IP addresses are stored on our side. If you want to opt out, set the `KEDRO_DISABLE_TELEMETRY` or `DO_NOT_TRACK` environment variables, or create a `.telemetry` file in the current working directory with the contents `consent: false`. Read more at https://docs.kedro.org/en/stable/configuration/telemetry.html
+2025-02-11 07:25:22,909 - kedro.runner.sequential_runner - INFO - Using synchronous mode for loading and saving data. Use the --async flag for potential performance gains. https://docs.kedro.org/en/stable/nodes_and_pipelines/run_a_pipeline.html#load-and-save-asynchronously
+2025-02-11 07:25:22,922 - kedro.pipeline.node - INFO - Running node: generar_datos: generate_data(None) -> [messy_data]
+2025-02-11 07:25:30,799 - kedro.io.data_catalog - INFO - Saving data to [dark_orange]messy_data[/dark_orange] (CSVDataset)...
+2025-02-11 07:25:30,918 - kedro.runner.sequential_runner - INFO - Completed node: generar_datos
+2025-02-11 07:25:30,921 - kedro.runner.sequential_runner - INFO - Completed 1 out of 2 tasks
+2025-02-11 07:25:30,923 - kedro.io.data_catalog - INFO - Loading data from [dark_orange]messy_data[/dark_orange] (CSVDataset)...
+2025-02-11 07:25:30,978 - kedro.pipeline.node - INFO - Running node: limpiar_datos: clean_data([messy_data]) -> [clean_data]
+2025-02-11 07:25:31,105 - kedro.io.data_catalog - INFO - Saving data to [dark_orange]clean_data[/dark_orange] (CSVDataset)...
+2025-02-11 07:25:31,244 - kedro.runner.sequential_runner - INFO - Completed node: limpiar_datos
+2025-02-11 07:25:31,247 - kedro.runner.sequential_runner - INFO - Completed 2 out of 2 tasks
+2025-02-11 07:25:31,251 - kedro.runner.sequential_runner - INFO - Pipeline execution completed successfully.
+2025-02-11 07:25:31,634 - kedro_telemetry.plugin - INFO - Kedro is sending anonymous usage data with the sole purpose of improving the product. No personal data or IP addresses are stored on our side. If you want to opt out, set the `KEDRO_DISABLE_TELEMETRY` or `DO_NOT_TRACK` environment variables, or create a `.telemetry` file in the current working directory with the contents `consent: false`. Read more at https://docs.kedro.org/en/stable/configuration/telemetry.html
+2025-02-11 07:25:32,083 - kedro.runner.sequential_runner - INFO - Using synchronous mode for loading and saving data. Use the --async flag for potential performance gains. https://docs.kedro.org/en/stable/nodes_and_pipelines/run_a_pipeline.html#load-and-save-asynchronously
+2025-02-11 07:25:32,089 - kedro.pipeline.node - INFO - Running node: generar_datos: generate_data(None) -> [messy_data]
+2025-02-11 07:25:36,675 - kedro.io.data_catalog - INFO - Saving data to [dark_orange]messy_data[/dark_orange] (CSVDataset)...
+2025-02-11 07:25:36,755 - kedro.runner.sequential_runner - INFO - Completed node: generar_datos
+2025-02-11 07:25:36,758 - kedro.runner.sequential_runner - INFO - Completed 1 out of 2 tasks
+2025-02-11 07:25:36,761 - kedro.io.data_catalog - INFO - Loading data from [dark_orange]messy_data[/dark_orange] (CSVDataset)...
+2025-02-11 07:25:36,805 - kedro.pipeline.node - INFO - Running node: limpiar_datos: clean_data([messy_data]) -> [clean_data]
+2025-02-11 07:25:36,887 - kedro.io.data_catalog - INFO - Saving data to [dark_orange]clean_data[/dark_orange] (CSVDataset)...
+2025-02-11 07:25:36,955 - kedro.runner.sequential_runner - INFO - Completed node: limpiar_datos
+2025-02-11 07:25:36,960 - kedro.runner.sequential_runner - INFO - Completed 2 out of 2 tasks
+2025-02-11 07:25:36,966 - kedro.runner.sequential_runner - INFO - Pipeline execution completed successfully.
