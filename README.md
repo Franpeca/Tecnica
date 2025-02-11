@@ -201,6 +201,11 @@ Se han creado 4 ***DAGs***:
 
 Como se ha dicho ya, se buscaba separar funcionalidades y la parte de los datos los genera *Kedro*. La parte de volcado, al ser más general, se ha decidido que se realice a través de un *DAG*, ya que esta tarea no corresponde a un flujo de datos como se realiza en *Kedro*. Además, así se demuestra un mayor conocimiento de los *DAGs*. También, se han añadido funciones de control de errores para saber qué ha estado fallando, revisando para ello los *logs* en la web (aquí la decisión de documentar bien las salidas en la parte de *Kedro*, entre otros). Los *DAGs* se encuentan en la carpeta */DAGs* y funcionan de forma síncrona con el volumen. Todo cambio en esta carpeta se refleja en el volumen del contenedor.
 
+Para acceder a la web de *Airflow* se debe de ir a través de esta direción en el navegador:
+```
+http://localhost:8080/
+```
+
 En relación a los problemas, el mayor nuevamente ha sido los permisos. **Soy consciente de que es una mala práctica** que el usuario *root* sea el usuario por defecto de este contenedor. Pense en integrar *scripts* para los permisos pero esto seguía siendo una mala práctica. Puedo lograr que *Airflow* tenga su usuario por defecto, pero cuando lo logro, obtengo problemas con el grupo *Docker* y se me presentan problemas al acceder al *socket*, impidiéndome la comunicación entre contenedores e incluso la ejecución. Creo que el problema es cómo creo estos usuarios en el *docker-compose* e incluso en cómo se registra la información de *Airflow* en la base de datos.
 
 ### *Docker*
